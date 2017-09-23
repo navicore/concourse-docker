@@ -26,6 +26,8 @@ WORKDIR /opt/concourse
 
 ADD mkkeys.sh /
 
+# WARNING
+# TODO: inject keys at runtime and don't inject private keys into inappropriate containers
 RUN /mkkeys.sh && chown -R concourse:concourse /opt/concourse && chown -R concourse:concourse /concourse-keys
 
 ENTRYPOINT ["/usr/bin/dumb-init", "su-exec", "concourse:concourse", "/usr/local/bin/concourse"]
