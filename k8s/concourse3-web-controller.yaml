@@ -13,8 +13,9 @@ spec:
     spec:
       containers:
         - name: concourse3-web
-          image: navicore/concourse-docker
-          imagePullPolicy: IfNotPresent
+          image: navicore/concourse-docker:3.5.0
+          #imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
           - name: CONCOURSE_TSA_HOST_KEY
             value: "/concourse-keys/tsa_host_key"
