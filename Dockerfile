@@ -9,7 +9,7 @@ RUN mkdir -p /opt/concourse && \
     addgroup -S concourse && \
     adduser -SDh /opt/concourse -s /sbin/nologin -G concourse concourse
 
-RUN apk --no-cache add --update su-exec openssl dumb-init openssh-client bash findutils iptables
+RUN apk --no-cache add --update su-exec openssl dumb-init openssh-client bash findutils iptables btrfs-progs
 
 RUN TMPFILE=$(mktemp).apk KEYPATH=/etc/apk/keys/ PUBKEY=sgerrand.rsa.pub && \
     wget -q -P "${KEYPATH}" "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${PUBKEY}" && \
