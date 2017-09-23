@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: concourse3-web
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+    - port: 2222
+      targetPort: 2222
+      name: tcp
+  selector:
+    component: concourse3-web
+

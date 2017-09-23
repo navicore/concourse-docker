@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: concourse3-db
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      name: tcp
+  selector:
+    component: concourse3-db
+

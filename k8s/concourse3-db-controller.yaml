@@ -1,0 +1,30 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: concourse3-db-controller
+spec:
+  replicas: 1
+  selector:
+    component: concourse3-db
+  template:
+    metadata:
+      labels:
+        component: concourse3-db
+    spec:
+      containers:
+        - name: concourse3-db
+          image: postgres:9.6
+          imagePullPolicy: IfNotPresent
+          env:
+          # - name: PGDATA
+          #   value: "/database"
+          - name: POSTGRES_USER
+            value: "concourse"
+          - name: POSTGRES_PASSWORD
+            value: "CHANGE_ME"
+          - name: POSTGRES_DB
+            value: "concourse"
+          ports:
+            - containerPort: 5432
+              name: tcp
+

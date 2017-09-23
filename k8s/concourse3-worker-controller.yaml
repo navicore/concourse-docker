@@ -1,0 +1,35 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: concourse3-worker-controller
+spec:
+  replicas: 6
+  selector:
+    component: concourse3-worker
+  template:
+    metadata:
+      labels:
+        component: concourse3-worker
+    spec:
+      containers:
+        - name: concourse3-worker
+          image: navicore/concourse-docker
+          imagePullPolicy: IfNotPresent
+          command:
+            # worker needs to run as root to run containers
+            - "/usr/bin/dumb-init"
+            - "/usr/local/bin/concourse"
+          securityContext:
+            privileged: true
+          env:
+          - name: CONCOURSE_TSA_HOST
+            value: "concourse3-web"
+          - name: CONCOURSE_TSA_PUBLIC_KEY
+            value: "/concourse-keys/tsa_host_key.pub"
+          - name: CONCOURSE_TSA_WORKER_PRIVATE_KEY
+            value: "/concourse-keys/worker_key"
+          - name: CONCOURSE_WORK_DIR
+            value: "/var/lib/concourse/worker-state"
+          args: [
+            "worker"
+          ]

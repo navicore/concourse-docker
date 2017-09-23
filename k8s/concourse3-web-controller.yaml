@@ -1,0 +1,43 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: concourse3-web-controller
+spec:
+  replicas: 1
+  selector:
+    component: concourse3-web
+  template:
+    metadata:
+      labels:
+        component: concourse3-web
+    spec:
+      containers:
+        - name: concourse3-web
+          image: navicore/concourse-docker
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: CONCOURSE_TSA_HOST_KEY
+            value: "/concourse-keys/tsa_host_key"
+          - name: CONCOURSE_TSA_AUTHORIZED_KEYS
+            value: "/concourse-keys/authorized_worker_keys"
+          - name: CONCOURSE_SESSION_SIGNING_KEY
+            value: "/concourse-keys/session_signing_key"
+          - name: POSTGRES_DB
+            value: "concourse"
+          - name: CONCOURSE_BASIC_AUTH_USERNAME
+            value: "concourse"
+          - name: CONCOURSE_BASIC_AUTH_PASSWORD
+            value: "CHANGE_ME"
+          - name: CONCOURSE_EXTERNAL_URL
+            value: "http://localhost:8080"
+          - name: CONCOURSE_POSTGRES_DATA_SOURCE
+            value: "postgres://concourse:CHANGE_ME@concourse3-db:5432/concourse?sslmode=disable"
+          args: [
+            "web"
+          ]
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 2222
+              name: tcp
+
