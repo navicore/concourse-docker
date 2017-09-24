@@ -11,26 +11,34 @@ spec:
       labels:
         component: concourse3-worker
     spec:
+      volumes:
+      - name: workdir
+        emptyDir: {}
       containers:
         - name: concourse3-worker
-          image: navicore/concourse-docker:3.5.0
+          volumeMounts:
+            - name: workdir
+              mountPath: "/concourse-work-dir"
+          image: navicore/concourse-docker:3.3.4
           #imagePullPolicy: IfNotPresent
           imagePullPolicy: Always
           command:
             # worker needs to run as root to run containers
-            - "/usr/bin/dumb-init"
+            #- "/usr/bin/dumb-init"
             - "/usr/local/bin/concourse"
           securityContext:
             privileged: true
           env:
+          - name: CONCOURSE_BAGGAGECLAIM_DRIVER
+            value: "btrfs"
           - name: CONCOURSE_TSA_HOST
             value: "concourse3-web"
           - name: CONCOURSE_TSA_PUBLIC_KEY
-            value: "/concourse-keys/tsa_host_key.pub"
+            value: "/opt/concourse/keys/tsa_host_key.pub"
           - name: CONCOURSE_TSA_WORKER_PRIVATE_KEY
-            value: "/concourse-keys/worker_key"
+            value: "/opt/concourse/keys/worker_key"
           - name: CONCOURSE_WORK_DIR
-            value: "/var/lib/concourse/worker-state"
+            value: "/concourse-work-dir"
           args: [
             "worker"
           ]

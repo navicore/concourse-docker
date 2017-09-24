@@ -13,16 +13,21 @@ spec:
     spec:
       containers:
         - name: concourse3-web
-          image: navicore/concourse-docker:3.5.0
+          image: navicore/concourse-docker:3.3.4
           #imagePullPolicy: IfNotPresent
           imagePullPolicy: Always
+          command:
+            # worker needs to run as root to run containers
+            #- "/usr/bin/dumb-init"
+            - "/usr/local/bin/concourse"
+          securityContext:
           env:
           - name: CONCOURSE_TSA_HOST_KEY
-            value: "/concourse-keys/tsa_host_key"
+            value: "/opt/concourse/keys/tsa_host_key"
           - name: CONCOURSE_TSA_AUTHORIZED_KEYS
-            value: "/concourse-keys/authorized_worker_keys"
+            value: "/opt/concourse/keys/authorized_worker_keys"
           - name: CONCOURSE_SESSION_SIGNING_KEY
-            value: "/concourse-keys/session_signing_key"
+            value: "/opt/concourse/keys/session_signing_key"
           - name: POSTGRES_DB
             value: "concourse"
           - name: CONCOURSE_BASIC_AUTH_USERNAME

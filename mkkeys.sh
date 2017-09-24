@@ -1,12 +1,12 @@
-#!/bin/sh
+#!/bin/ash
 
-ROOT_DIR="/"
-
-: ${KEYS_DIR:="${ROOT_DIR}/concourse-keys/"}
+: ${KEYS_DIR:="./keys/"}
 : ${SESSION_SIGNING_KEY_NAME:='session_signing_key'}
 : ${TSA_HOST_KEY_NAME:='tsa_host_key'}
 : ${WORKER_KEY_NAME:='worker_key'}
 : ${AUTHORIZED_WORKER_KEYS_NAME:='authorized_worker_keys'}
+
+mkdir -p ${KEYS_DIR}
 
 gen_key() (
   mkdir -p "${KEYS_DIR}"
